@@ -23,6 +23,7 @@ function endTime() {
   timer.textContent = "Time is up";
 }
 //countDown(); working timer
+//question list working not final.
 var questions = [
   {
     question: "What does CSS stand for?",
