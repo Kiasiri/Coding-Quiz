@@ -10,6 +10,8 @@ var timeLeft = 10;
 var score = document.getElementById("score");
 var answer = document.querySelector(".answer-buttons");
 var point = 0;
+let shuffledQuestions, currentQuestionIndex;
+
 function countDown() {
   var timerInterval = setInterval(function () {
     timeLeft--;
@@ -37,10 +39,10 @@ answer.addEventListener("click", function () {
   }
 });
 //above event listener for start button click.
-//below function makes start button dissapear.
+//below function makes start button dissapear and question appear.
 function startGame() {
   startButton.classList.add("d-none");
-  // shuffledQuestions = questions.sort(() => Math.random() - 0.5);
+  //shuffledQuestions = questions.sort(() => Math.random() - 0.5);
   //currentQuestionIndex = 0;
   quizCard.classList.remove("d-none");
   console.log(quizCard);
@@ -67,11 +69,11 @@ function clearStatusClass(element) {
 }
 //BORROWED CODE END
 //question list working not final.
-var questions = [
+const questions = [
   {
     question: "What does CSS stand for?",
     answers: [
-      { text: "Cascading Style sheets", correct: true },
+      { text: "Cascading Style Sheets", correct: true },
       { text: "Complex Style Sheets", correct: false },
       { text: "Confusing Style Sheets", correct: false },
       { text: "Crazy Style Sheets", correct: false },
