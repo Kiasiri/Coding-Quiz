@@ -2,14 +2,18 @@ var timer = document.getElementById("timer");
 var correct = false;
 var main = document.getElementById("main-box");
 var question = document.getElementById("question");
-var questionCard = document.getElementById("question-box");
+var quizCard = document.querySelector("#quizCard");
 var btnEl = document.querySelector(".btn");
 var btnList = document.getElementById("answer-buttons");
+var startButton = document.getElementById("start");
 var timeLeft = 10;
+var score = document.getElementById("score");
+var answer = document.querySelector(".answer-buttons");
+var point = 0;
 function countDown() {
   var timerInterval = setInterval(function () {
     timeLeft--;
-    timer.textContent = timeLeft + " seconds left.";
+    timer.textContent = "You have " + timeLeft + " seconds left.";
     console.log(timeLeft);
     if (timeLeft === 0) {
       clearInterval(timerInterval);
@@ -20,9 +24,48 @@ function countDown() {
 }
 
 function endTime() {
-  timer.textContent = "Time is up";
+  timer.textContent = "Your time is up!";
 }
-//countDown(); working timer
+
+startButton.addEventListener("click", startGame);
+startButton.addEventListener("click", countDown);
+answer.addEventListener("click", function () {
+  if (correct) {
+    point++;
+    score.textContent = point;
+    localStorage.setItem("score", score);
+  }
+});
+//above event listener for start button click.
+//below function makes start button dissapear.
+function startGame() {
+  startButton.classList.add("d-none");
+  // shuffledQuestions = questions.sort(() => Math.random() - 0.5);
+  //currentQuestionIndex = 0;
+  quizCard.classList.remove("d-none");
+  console.log(quizCard);
+  //nextQuestion();
+}
+//BORROWED CODE BEGIN
+function nextQuestion() {
+  //resetState();
+  showQuestion(shuffledQuestions[currentQuestionIndex]);
+}
+
+function setStatusClass(element, correct) {
+  clearStatusClass(element);
+  if (correct === true) {
+    element.classList.add("correct");
+  } else {
+    element.classList.add("wrong");
+  }
+}
+
+function clearStatusClass(element) {
+  element.classList.remove("correct");
+  element.classList.remove("wrong");
+}
+//BORROWED CODE END
 //question list working not final.
 var questions = [
   {
