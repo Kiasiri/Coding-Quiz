@@ -1,22 +1,21 @@
 var timer = document.getElementById("timer");
-var correct = false;
 var main = document.getElementById("main-box");
-var question = document.getElementById("question");
+var questionEl = document.getElementById("question");
 var quizCard = document.querySelector("#quizCard");
 var btnEl = document.querySelector(".btn");
 var btnList = document.getElementById("answer-buttons");
 var startButton = document.getElementById("start");
 var timeLeft = 10;
 var score = document.getElementById("score");
-var answer = document.querySelector(".answer-buttons");
+var answerBtns = document.querySelector(".answer-buttons");
 var point = 0;
-let shuffledQuestions, currentQuestionIndex;
+var correct = true;
+let shuffledQuestons, currentQuestionIndex;
 
 function countDown() {
   var timerInterval = setInterval(function () {
     timeLeft--;
     timer.textContent = "You have " + timeLeft + " seconds left.";
-    console.log(timeLeft);
     if (timeLeft === 0) {
       clearInterval(timerInterval);
 
@@ -31,10 +30,11 @@ function endTime() {
 
 startButton.addEventListener("click", startGame);
 startButton.addEventListener("click", countDown);
-answer.addEventListener("click", function () {
-  if (correct) {
+btnList.addEventListener("click", function () {
+  //might have to change btnList
+  if (correct === true) {
     point++;
-    score.textContent = point;
+    score.textContent = "Your score is " + point;
     localStorage.setItem("score", score);
   }
 });
@@ -42,21 +42,55 @@ answer.addEventListener("click", function () {
 //below function makes start button dissapear and question appear.
 function startGame() {
   startButton.classList.add("d-none");
-  //shuffledQuestions = questions.sort(() => Math.random() - 0.5);
-  //currentQuestionIndex = 0;
+  shuffledQuestions = questions.sort(() => Math.random() - 0.5); //breaks code for some reason.
+  currentQuestionIndex = 0;
   quizCard.classList.remove("d-none");
-  console.log(quizCard);
-  //nextQuestion();
-}
-//BORROWED CODE BEGIN
-function nextQuestion() {
-  //resetState();
-  showQuestion(shuffledQuestions[currentQuestionIndex]);
+  nextQuestion();
 }
 
+function nextQuestion() {
+  resetState();
+  showQuestion(shuffledQuestions[currentQuestionIndex]);
+}
+function showQuestion(question) {
+  questionEl.innerText = questions.question;
+  question.answers.forEach((answer) => {
+    const button = document.createElement("button");
+    button.innerText = answer.text;
+    button.classList.add("btn");
+    if (answer.correct) {
+      button.dataset.correct = answer.correct;
+    }
+    button.addEventListener("click", selectAnswer);
+    btnList.appendChild(button);
+    console.log(question);
+    console.log(questionEl);
+    console.log(questions.question);
+  });
+}
+function resetState() {
+  clearStatusClass(document.body);
+  while (btnList.firstChild) {
+    btnList.removeChild(btnList.firstChild);
+  }
+}
+function selectAnswer(event) {
+  var selectedButton = event.target;
+  var correct = selectedButton.dataset.correct;
+  setStatusClass(document.body, correct);
+  Array.from(btnList.children).forEach((button) => {
+    setStatusClass(button, button.dataset.correct);
+  });
+  if (questions.length > currentQuestionIndex + 1) {
+    //endTime();
+  } else {
+    startButton.innerText = "Restart";
+    startButton.classList.remove("d-none");
+  }
+}
 function setStatusClass(element, correct) {
   clearStatusClass(element);
-  if (correct === true) {
+  if (correct) {
     element.classList.add("correct");
   } else {
     element.classList.add("wrong");
@@ -67,7 +101,7 @@ function clearStatusClass(element) {
   element.classList.remove("correct");
   element.classList.remove("wrong");
 }
-//BORROWED CODE END
+
 //question list working not final.
 const questions = [
   {
