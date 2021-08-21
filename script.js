@@ -10,8 +10,7 @@ var score = document.getElementById("score");
 var answerBtns = document.querySelector("#answer-buttons");
 var point = 0;
 var initials = "";
-//why isn't this working
-//let correct = true;
+
 let shuffledQuestons, currentQuestionIndex;
 
 function countDown() {
@@ -29,22 +28,11 @@ function countDown() {
 function endTime() {
   timer.textContent = "You have finished the quiz.";
   timeLeft -= 500;
+  quizCard.classList.add("d-none");
 }
 
 startButton.addEventListener("click", startGame);
 startButton.addEventListener("click", countDown);
-//Move this function it is getting called 4 times.
-/*btnList.addEventListener("click", function () {
-  //might have to change btnList
-  if (correct) {
-    point++;
-    score.textContent = "Your score is " + point;
-    localStorage.setItem("score", point);
-    console.log(point);
-    console.log(score);
-  }
-});*/
-
 //above event listener for start button click.
 //below function makes start button dissapear and question appear.
 function startGame() {
@@ -80,10 +68,6 @@ function selectAnswer(e) {
   var selectedButton = e.target;
   const correct = selectedButton.dataset.correct;
   setStatusClass(document.body, correct);
-
-  /*Array.from(btnList.children).forEach((button) => {
-    setStatusClass(button, button.dataset.correct);
-  });*/
   if (questions.length > currentQuestionIndex + 1) {
     currentQuestionIndex++;
     nextQuestion();
@@ -139,6 +123,22 @@ const questions = [
       { text: "The Muscles", correct: true },
       { text: "The Clothes", correct: false },
       { text: "More bones", correct: false },
+    ],
+  },
+  {
+    question: "What is BootStrap?",
+    answers: [
+      { text: "A Coding Language", correct: false },
+      { text: "A popular CSS framework", correct: true },
+      { text: "Twitters operating system", correct: false },
+      { text: "A javascript library", correct: false },
+    ],
+  },
+  {
+    question: "What is air velocity of an unladden swallow?",
+    answers: [
+      { text: "I don't know that?!", correct: false },
+      { text: "African or European", correct: true },
     ],
   },
 ];
