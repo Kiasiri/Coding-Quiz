@@ -7,9 +7,8 @@ var btnList = document.getElementById("answer-buttons");
 var startButton = document.getElementById("start");
 var timeLeft = 10;
 var score = document.getElementById("score");
-var answerBtns = document.querySelector(".answer-buttons");
+var answerBtns = document.querySelector("#answer-buttons");
 var point = 0;
-var correct = true;
 let shuffledQuestons, currentQuestionIndex;
 
 function countDown() {
@@ -32,10 +31,12 @@ startButton.addEventListener("click", startGame);
 startButton.addEventListener("click", countDown);
 btnList.addEventListener("click", function () {
   //might have to change btnList
-  if (correct === true) {
+  if (correct) {
     point++;
     score.textContent = "Your score is " + point;
-    localStorage.setItem("score", score);
+    localStorage.setItem("score", point);
+    console.log(point);
+    console.log(score);
   }
 });
 //above event listener for start button click.
@@ -53,7 +54,7 @@ function nextQuestion() {
   showQuestion(shuffledQuestions[currentQuestionIndex]);
 }
 function showQuestion(question) {
-  questionEl.innerText = questions.question;
+  questionEl.innerText = question.question;
   question.answers.forEach((answer) => {
     const button = document.createElement("button");
     button.innerText = answer.text;
@@ -62,10 +63,7 @@ function showQuestion(question) {
       button.dataset.correct = answer.correct;
     }
     button.addEventListener("click", selectAnswer);
-    btnList.appendChild(button);
-    console.log(question);
-    console.log(questionEl);
-    console.log(questions.question);
+    answerBtns.appendChild(button);
   });
 }
 function resetState() {
@@ -74,18 +72,17 @@ function resetState() {
     btnList.removeChild(btnList.firstChild);
   }
 }
-function selectAnswer(event) {
-  var selectedButton = event.target;
-  var correct = selectedButton.dataset.correct;
+function selectAnswer(e) {
+  var selectedButton = e.target;
+  const correct = selectedButton.dataset.correct;
   setStatusClass(document.body, correct);
   Array.from(btnList.children).forEach((button) => {
     setStatusClass(button, button.dataset.correct);
   });
   if (questions.length > currentQuestionIndex + 1) {
-    //endTime();
+    currentQuestionIndex++;
+    nextQuestion();
   } else {
-    startButton.innerText = "Restart";
-    startButton.classList.remove("d-none");
   }
 }
 function setStatusClass(element, correct) {
@@ -101,7 +98,7 @@ function clearStatusClass(element) {
   element.classList.remove("correct");
   element.classList.remove("wrong");
 }
-
+function cycleQuestion() {}
 //question list working not final.
 const questions = [
   {
