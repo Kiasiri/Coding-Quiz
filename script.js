@@ -5,17 +5,20 @@ var quizCard = document.querySelector("#quizCard");
 var btnEl = document.querySelector(".btn");
 var btnList = document.getElementById("answer-buttons");
 var startButton = document.getElementById("start");
-var timeLeft = 10;
+var timeLeft = 60;
 var score = document.getElementById("score");
 var answerBtns = document.querySelector("#answer-buttons");
 var point = 0;
+var initials = "";
+//why isn't this working
+//let correct = true;
 let shuffledQuestons, currentQuestionIndex;
 
 function countDown() {
   var timerInterval = setInterval(function () {
     timeLeft--;
     timer.textContent = "You have " + timeLeft + " seconds left.";
-    if (timeLeft === 0) {
+    if (timeLeft <= 0) {
       clearInterval(timerInterval);
 
       endTime();
@@ -24,12 +27,14 @@ function countDown() {
 }
 
 function endTime() {
-  timer.textContent = "Your time is up!";
+  timer.textContent = "You have finished the quiz.";
+  timeLeft -= 500;
 }
 
 startButton.addEventListener("click", startGame);
 startButton.addEventListener("click", countDown);
-btnList.addEventListener("click", function () {
+//Move this function it is getting called 4 times.
+/*btnList.addEventListener("click", function () {
   //might have to change btnList
   if (correct) {
     point++;
@@ -38,12 +43,13 @@ btnList.addEventListener("click", function () {
     console.log(point);
     console.log(score);
   }
-});
+});*/
+
 //above event listener for start button click.
 //below function makes start button dissapear and question appear.
 function startGame() {
   startButton.classList.add("d-none");
-  shuffledQuestions = questions.sort(() => Math.random() - 0.5); //breaks code for some reason.
+  shuffledQuestions = questions.sort(() => Math.random() - 0.5);
   currentQuestionIndex = 0;
   quizCard.classList.remove("d-none");
   nextQuestion();
@@ -59,9 +65,7 @@ function showQuestion(question) {
     const button = document.createElement("button");
     button.innerText = answer.text;
     button.classList.add("btn");
-    if (answer.correct) {
-      button.dataset.correct = answer.correct;
-    }
+    button.dataset.correct = answer.correct;
     button.addEventListener("click", selectAnswer);
     answerBtns.appendChild(button);
   });
@@ -76,21 +80,30 @@ function selectAnswer(e) {
   var selectedButton = e.target;
   const correct = selectedButton.dataset.correct;
   setStatusClass(document.body, correct);
-  Array.from(btnList.children).forEach((button) => {
+
+  /*Array.from(btnList.children).forEach((button) => {
     setStatusClass(button, button.dataset.correct);
-  });
+  });*/
   if (questions.length > currentQuestionIndex + 1) {
     currentQuestionIndex++;
     nextQuestion();
   } else {
+    endTime();
   }
 }
 function setStatusClass(element, correct) {
   clearStatusClass(element);
-  if (correct) {
+  if (correct === "true") {
     element.classList.add("correct");
+
+    point++;
+    score.textContent = "Your score is " + point;
+    localStorage.setItem("score", point);
+    console.log("point = ", point);
+    console.log(score);
   } else {
     element.classList.add("wrong");
+    timeLeft -= 5;
   }
 }
 
@@ -111,7 +124,7 @@ const questions = [
     ],
   },
   {
-    question: "What does HTML satnd for?",
+    question: "What does HTML stand for?",
     answers: [
       { text: "Hypertext Markup Language", correct: true },
       { text: "Hyper Translation Language", correct: false },
