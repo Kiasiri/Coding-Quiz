@@ -9,6 +9,7 @@ var timeLeft = 30;
 var score = document.getElementById("score");
 var answerBtns = document.querySelector("#answer-buttons");
 var point = 0;
+var username = "";
 var saveScoreBtn = document.querySelector(".savescore");
 const highScore = JSON.parse(localStorage.getItem("highScores")) || [];
 console.log(highScore);
@@ -33,8 +34,13 @@ function endTime() {
   saveScoreBtn.classList.remove("d-none");
 }
 
-function saveScore()
-saveScoreBtn.addEventListener("click", startGame);
+function saveScore() {
+  var username = prompt("Enter your name to save your score.");
+  localStorage.setItem(username, point);
+  document.location.reload();
+}
+
+saveScoreBtn.addEventListener("click", saveScore);
 startButton.addEventListener("click", startGame);
 startButton.addEventListener("click", countDown);
 //above event listener for start button click starts timer and starts game.
