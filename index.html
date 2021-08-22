@@ -12,20 +12,33 @@
     <title>Timed Coding Quiz</title>
   </head>
   <body>
-    <div class="container justify-content-center">
-      <div id="quizCard" class="d-none">
+    <div
+      class="
+        container
+        vh-100
+        w-100
+        d-flex
+        align-items-center
+        justify-content-center
+      "
+    >
+      <div class="d-none card-body row" id="quizCard">
         <div class="question" id="question">Question</div>
-        <div class="btn-grid p-3 rounded" id="answer-buttons">
-          <button class="btn btn-block btn-">Answer 1</button>
-          <button class="btn btn-block">Answer 2</button>
-          <button class="btn btn-block">Answer 3</button>
-          <button class="btn btn-block">Answer 4</button>
+        <div
+          class="btn-grid p-2 mb-2 rounded btn-group"
+          role="group"
+          id="answer-buttons"
+        >
+          <button class="btn bg-dark">Answer 1</button>
+          <button class="btn bg-dark">Answer 2</button>
+          <button class="btn bg-dark">Answer 3</button>
+          <button class="btn bg-dark">Answer 4</button>
         </div>
       </div>
       <div class="container justify-content-center controls">
         <button class="btn btn-success" id="start">Start Quiz</button>
       </div>
-      <footer class="container-fluid bg-dark text-light mb-5 p-3">
+      <footer class="container-fluid bg-dark text-light mb-5 p-3 rounded">
         <div class=""><h1 class="" id="timer">Time</h1></div>
         <div class="" id=""><h1 class="" id="score">Score</h1></div>
         <button class="savescore d-none btn-success">Save Score</button>
