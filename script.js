@@ -5,12 +5,13 @@ var quizCard = document.querySelector("#quizCard");
 var btnEl = document.querySelector(".btn");
 var btnList = document.getElementById("answer-buttons");
 var startButton = document.getElementById("start");
-var timeLeft = 60;
+var timeLeft = 30;
 var score = document.getElementById("score");
 var answerBtns = document.querySelector("#answer-buttons");
 var point = 0;
-var initials = "";
-
+var saveScoreBtn = document.querySelector(".savescore");
+const highScore = JSON.parse(localStorage.getItem("highScores")) || [];
+console.log(highScore);
 let shuffledQuestons, currentQuestionIndex;
 
 function countDown() {
@@ -29,11 +30,14 @@ function endTime() {
   timer.textContent = "You have finished the quiz.";
   timeLeft -= 500;
   quizCard.classList.add("d-none");
+  saveScoreBtn.classList.remove("d-none");
 }
 
+function saveScore()
+saveScoreBtn.addEventListener("click", startGame);
 startButton.addEventListener("click", startGame);
 startButton.addEventListener("click", countDown);
-//above event listener for start button click.
+//above event listener for start button click starts timer and starts game.
 //below function makes start button dissapear and question appear.
 function startGame() {
   startButton.classList.add("d-none");
@@ -48,7 +52,7 @@ function nextQuestion() {
   showQuestion(shuffledQuestions[currentQuestionIndex]);
 }
 function showQuestion(question) {
-  questionEl.innerText = question.question;
+  questionEl.innerText = question.question; //Not sure why questions.question doesn't work and instead question.question works.
   question.answers.forEach((answer) => {
     const button = document.createElement("button");
     button.innerText = answer.text;
