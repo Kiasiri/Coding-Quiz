@@ -30,6 +30,8 @@ This project is covered under the MIT license.
 
 ## Deployed app
 [Quiz Application](https://kiasiri.github.io/Coding-Quiz/)
+<img src="quiz.PNG" width="300">
+
 ## Questions
 
 You can contact me at:
